@@ -12,17 +12,17 @@ pub fn wstr(string: &str) -> Vec<u16> {
     wstring
 }
 
-pub fn nstr(wstring: *const u16) -> String {
+pub unsafe fn nstr(wstring: *const u16) -> String {
     let mut string = String::new();
 
     let mut i = 0;
     loop {
-        let w = unsafe { *wstring.offset(i) };
+        let w = *wstring.offset(i);
         i += 1;
         if w == 0 {
             break;
         }
-        let c = unsafe { char::from_u32_unchecked(w as u32) };
+        let c = char::from_u32_unchecked(w as u32);
         string.push(c);
     }
 
